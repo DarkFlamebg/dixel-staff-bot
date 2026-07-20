@@ -5,6 +5,12 @@
 El sistema funciona de manera híbrida: un bot de Discord escucha los cambios en la plantilla, resuelve las menciones asíncronas de usuarios y roles, y expone una API pública en Node.js/Express que renderiza una **imagen dinámica (PNG)** mediante Canvas. Esta imagen se incrusta en el foro mediante BBCode, eliminando la necesidad de editar manualmente el post ante cada cambio de staff.
 
 ---
+<img width="568" height="369" alt="Captura de pantalla 2026-07-19 230534" src="https://github.com/user-attachments/assets/c8a58183-4457-4a78-94f2-c1e959529047" />
+
+---
+<img width="976" height="774" alt="Captura de pantalla 2026-07-19 230620" src="https://github.com/user-attachments/assets/d284ce19-15ea-4b5a-a19d-2b30f2826830" />
+
+---
 
 ## 🚀 Arquitectura y Funcionamiento
 
