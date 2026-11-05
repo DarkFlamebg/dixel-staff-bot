@@ -1,15 +1,16 @@
 // src/commands/apelacion.js
 //
 // /apelacion <número o personaje> — ficha de solo lectura de una apelación.
-// La respuesta solo la ve quien usa el comando.
+// Solo el staff puede usarlo; la respuesta la ve todo el canal.
 
-import { SlashCommandBuilder, PermissionFlagsBits, MessageFlags } from 'discord.js';
+import { SlashCommandBuilder, InteractionContextType, MessageFlags } from 'discord.js';
 import { apiGet } from '../apelaciones/api.js';
 import { embedApelacion, embedListaResultados } from '../apelaciones/embeds.js';
+import { bloquearSiNoEsStaff } from '../apelaciones/staff.js';
 
 export const data = new SlashCommandBuilder()
     .setName('apelacion')
-    .setDescription('Consulta una apelación de desbaneo (solo lectura).')
+    .setDescription('Muestra una apelación de desbaneo (solo staff).')
     .addStringOption((option) =>
         option
             .setName('busqueda')
@@ -17,25 +18,35 @@ export const data = new SlashCommandBuilder()
             .setRequired(true)
             .setMaxLength(60),
     )
-    // Por defecto solo staff; se puede ajustar en Ajustes del servidor > Integraciones
-    .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages);
+    .setContexts(InteractionContextType.Guild);
 
 export async function execute(interaction) {
+    if (await bloquearSiNoEsStaff(interaction)) return;
+
     const busqueda = interaction.options.getString('busqueda').trim();
-    await interaction.deferReply({ flags: MessageFlags.Ephemeral });
+    await interaction.deferReply();
 
     try {
         const { resultados } = await apiGet({ accion: 'buscar', q: busqueda });
+        const solicitante = interaction.member ?? interaction.user;
 
         if (!resultados.length) {
-            await interaction.editReply(`No encontré ninguna apelación para **${busqueda}**.`);
+            await interaction.deleteReply().catch(() => {});
+            await interaction.followUp({
+                content: `No encontré ninguna apelación para **${busqueda}**.`,
+                flags: MessageFlags.Ephemeral,
+            });
         } else if (resultados.length === 1) {
-            await interaction.editReply({ embeds: [embedApelacion(resultados[0])] });
+            await interaction.editReply({ embeds: [embedApelacion(resultados[0], solicitante)] });
         } else {
-            await interaction.editReply({ embeds: [embedListaResultados(busqueda, resultados)] });
+            await interaction.editReply({ embeds: [embedListaResultados(busqueda, resultados, solicitante)] });
         }
     } catch (error) {
         console.error('Error en /apelacion:', error);
-        await interaction.editReply('No pude consultar las apelaciones ahora mismo. Inténtalo en un momento.');
+        await interaction.deleteReply().catch(() => {});
+        await interaction.followUp({
+            content: 'No pude consultar las apelaciones ahora mismo. Inténtalo en un momento.',
+            flags: MessageFlags.Ephemeral,
+        });
     }
 }
