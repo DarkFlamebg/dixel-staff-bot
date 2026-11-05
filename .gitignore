@@ -1,3 +1,12 @@
 node_modules/
 .env
 *.log
+
+# Cache de embeddings generado por buildIndex — no commitear
+data/embeddings.cache.json
+
+# preguntas.json se genera desde el Excel con: npm run excel-to-json
+data/preguntas.json
+
+# Modelo descargado por @xenova/transformers (puede pesar cientos de MB)
+.cache/

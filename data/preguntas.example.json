@@ -1,0 +1,22 @@
+[
+  {
+    "pregunta": "¿Cómo consigo chamba de camionero?",
+    "respuesta": "Ve al garaje de Trucking en /gps trucking, habla con el NPC del letrero verde y selecciona 'Postularme' en el menú."
+  },
+  {
+    "pregunta": "¿Cuál es el comando para ver mi ubicación (GPS)?",
+    "respuesta": "Usa /gps seguido del nombre del lugar, por ejemplo: /gps banco. También puedes usar /gps sin argumentos para ver tu posición actual."
+  },
+  {
+    "pregunta": "¿Cuánto cuesta un dix actualmente?",
+    "respuesta": "El precio del dix se actualiza semanalmente. Revisa el canal #economia-dixel para ver la tasa vigente."
+  },
+  {
+    "pregunta": "¿Dónde reporto a un jugador que rompe las reglas?",
+    "respuesta": "Abre un ticket en #reportes con evidencia (video o capturas) y un staff lo revisará en un plazo de 24h."
+  },
+  {
+    "pregunta": "¿Cómo me uno a una facción o empresa?",
+    "respuesta": "Las facciones/empresas abren reclutamiento en #reclutamiento-ic. Debes cumplir el nivel mínimo IC indicado en cada publicación."
+  }
+]
